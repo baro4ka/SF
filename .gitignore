@@ -206,6 +206,10 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Excel
-.cvs
-.xlsx
+# SF Project_HH
+dst-3.0_16_1_hh_database.csv
+ExchangeRates.zip
+diabetes_data.zip
+orders_and_products.zip
+ratings_movies.zip
+citibike-tripdata.csv
