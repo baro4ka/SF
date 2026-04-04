@@ -1,0 +1,5 @@
+=== id mephi-admin ===
+uid=1001(mephi-admin) gid=1002(mephi-admin) группы=1002(mephi-admin),1001(mephi-dev)
+
+=== getent group mephi-dev ===
+mephi-dev:x:1001:mephi-admin
