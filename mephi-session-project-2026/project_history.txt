@@ -60,48 +60,62 @@
    60  sudo parted /dev/sdb mkpart primary ext4 0% 100%
    61  Ssudo shutdown now
    62  sudo shutdown now
-   63  sudo fdisk -l
-   64  sudo parted /dev/sdb mklabel gpt
-   65  sudo parted /dev/sdb mkpart primary ext4 0% 100%
-   66  sudo mkfs.ext4 -L MEPHI_DATA /dev/sdb1
-   67  cd
-   68  sudo mkdir -p /data/mephi-web
-   69  echo "LABEL=MEPHI_DATA /data/mephi-web ext4 defaults 0 0" | sudo tee -a /etc/fstab
-   70  sudo mount -a
-   71  df -h /data/mephi-web
-   72  sudo systemctl start nginx
-   73  sudo systemctl enable nginx
-   74  sudo systemctl status nginx
-   75  sudo journalctl -u nginx --since "5 minutes ago" > /tmp/nginx_recent_logs.txt
-   76  cat /tmp/nginx_recent_logs.txt
-   77  sudo groupadd mephi-dev
-   78  sudo useradd -m -G mephi-dev mephi-admin
-   79  echo "P@ssw0rd2026" | sudo passwd --stdin mephi-admin
-   80  sudo chown mephi-admin:mephi-dev /data/mephi-web
-   81  sudo chmod 2775 /data/mephi-web
-   82  ls -ld /data/mephi-web
-   83  id mephi-admin
-   84  getent group mephi-dev
-   85  getenforce | sudo tee /tmp/selinux_status.txt
-   86  sudo semanage fcontext -a -t httpd_sys_content_t "/data/mephi-web(/.*)?"
-   87  sudo restorecon -Rv /data/mephi-web
-   88  ls -Z /data/mephi-web | sudo tee /tmp/file_contexts.txt
-   89  sudo setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump
-   90  getcap /usr/sbin/tcpdump | sudo tee /tmp/tcpdump_capabilities.txt
-   91  echo "Hello from Student: 370753" | sudo tee /data/mephi-web/index.html
-   92  sudo tee /etc/nginx/conf.d/mephi.conf << EOF
-server {
-    listen 80;
-    server_name _;
-    root /data/mephi-web;
-    index index.html;
-}
-EOF
-
-   93  sudo rm -f /etc/nginx/conf.d/default.conf
-   94  sudo nginx -t
-   95  sudo systemctl restart nginx
-   96  sudo firewall-cmd --permanent --add-service=http
-   97  sudo firewall-cmd --reload
-   98  curl http://192.168.1.100
-   99  history > /tmp/project_history.txt
+   63  cd
+   64  git status
+   65  cd SF/unix
+   66  cp ~/network_check.txt .
+   67  cp ~/nginx_recent_logs.txt .
+   68  cp ~/selinux_status.txt .
+   69  cp ~/file_contexts.txt .
+   70  cp ~/tcpdump_capabilities.txt .
+   71  cp ~/project_history.txt .
+   72  cp ~/fstab.txt .
+   73  cp ~/curl_output.txt .
+   74  git add .
+   75  git commit -m "Add MEPHI session project 2026 results"
+   76  git push
+   77  cd /tmp
+   78  sudo dnf download tcpdump
+   79  ls -la /tmp/tcpdump-*.rpm
+   80  echo "root" | sudo tee /etc/ssh/denied_users
+   81  echo "auth required pam_listfile.so onerr=succeed item=user sense=deny file=/etc/ssh/denied_users" | sudo tee -a /etc/pam.d/login
+   82  echo "DenyUsers root" | sudo tee -a /etc/ssh/sshd_config
+   83  sudo systemctl restart sshd
+   84  stat /data/mephi-web > ~/permissions.txt
+   85  { echo "=== id mephi-admin ==="; id mephi-admin; echo ""; echo "=== getent group mephi-dev ==="; getent group mephi-dev; } > ~/users_groups.txt
+   86  cat ~/permissions.txt
+   87  echo ""
+   88  cat ~/users_groups.txt
+   89  curl -s http://192.168.1.100 > ~/mephi-nginx-verification.txt
+   90  cat ~/mephi-nginx-verification.txt
+   91  cp ~/permissions.txt ~/SF/unix/
+   92  cp ~/users_groups.txt ~/SF/unix/
+   93  cp /tmp/tcpdump-*.rpm ~/SF/unix/
+   94  cd ~/SF/unix
+   95  ls -la
+   96  cd ~/SF/unix
+   97  git add .
+   98  git commit -m "Add all required files: permissions, users_groups, rpm"
+   99  git push
+  100  rpm -q tcpdump
+  101  history > ~/project_history.txt
+  102  cp ~/project_history.txt ~/mephi-session-project-2026/
+  103  cd ~
+  104  cd ~/SF/unix
+  105  pwd
+  106  history > project_history.txt
+  107  git add project_history.txt
+  108  git commit -m "Update project_history.txt with latest commands"
+  109  git push
+  110  git pull
+  111  git fetch origin
+  112  git reset --hard origin/main
+  113  history > project_history.txt
+  114  git add project_history.txt
+  115  git commit -m "Update project_history.txt with latest commands"
+  116  git push
+  117  cd ~/SF
+  118  mv unix mephi-session-project-2026
+  119  ls -la
+  120  cd ~/SF/mephi-session-project-2026
+  121  history > project_history.txt
