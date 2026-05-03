@@ -206,6 +206,7 @@ credit-card-ml-deployment/
 │   ├── rf_default_model.pkl      # v1
 │   └── rf_default_model_v2.pkl   # v2
 ├── notebooks/
+│   ├── Z-test.ipynb
 │   ├── RandomForestClassifier.ipynb
 │   └── GradientBoostingClassifier.ipynb
 ├── docker/Dockerfile
