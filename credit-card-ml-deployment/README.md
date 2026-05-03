@@ -34,6 +34,8 @@ python app/API.py
 docker pull cr.yandex/crpk4u2d1dcukcnbk0jv/credit-default-predictor:v2
 docker run -p 5000:5000 cr.yandex/crpk4u2d1dcukcnbk0jv/credit-default-predictor:v2
 ```
+> Образ `:v2` включает **обе модели** (RandomForest v1 и GradientBoosting v2)  
+> и поддерживает **A/B‑тестирование** на основе `user_id`.  
 
 Сервис будет доступен по адресу `http://localhost:5000`.
 
