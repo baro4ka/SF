@@ -212,11 +212,16 @@ credit-card-ml-deployment/
 │   ├── RandomForestClassifier.ipynb
 │   └── GradientBoostingClassifier.ipynb
 ├── docker/Dockerfile
+├── logs/
+│   ├── access.log
+│   └── error.log
 ├── tests/
 │   ├── A_B_test_hight_risk.jpg
 │   ├── Test_hight_risk.jpg
 │   └── Test_low_risk.jpg
 ├── requirements.txt
+├── docker-compose.yml
+├── nginx.conf
 └── README.md
 ```
 
@@ -233,6 +238,40 @@ cr.yandex/crpk4u2d1dcukcnbk0jv/credit-default-predictor:v2
 
 ---
 
+## Оркестрация с Docker Compose (бонус)
+
+Для production‑подобного запуска с **реверс-прокси** и **логированием** используется Docker Compose.
+
+```bash
+docker-compose up -d
+```
+
+Сервис становится доступен по адресу `http://localhost` (порт 80).
+
+Логи всех HTTP‑запросов сохраняются в `./logs/access.log`.
+
+### Что входит в оркестрацию
+
+| Сервис | Роль |
+|--------|------|
+| `ml-predictor` | Основной ML‑сервис (Flask + модель) |
+| `ml-gateway` | Nginx — реверс‑прокси и сбор логов |
+
+### Остановка сервиса
+
+```bash
+docker-compose down
+```
+
+### Пример логов
+
+После отправки запроса в логах появляется запись:
+
+```log
+172.18.0.1 - - [04/May/2026:11:19:13 +0000] "GET /health HTTP/1.1" 200 58
+```
+
+---
 ## Воспроизводимость
 
 - Все зависимости фиксированы в `requirements.txt`.
